@@ -1,0 +1,60 @@
+volumes:
+  opensearch:
+
+
+networks:
+  rag:
+    name: rag
+
+
+services:
+
+  opensearch:
+    restart: unless-stopped
+    image: opensearchproject/opensearch:latest
+    volumes:
+      - opensearch:/usr/share/opensearch/data
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    networks:
+      - rag
+    environment:
+      discovery.type: single-node
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "#Admin1234"
+      OPENSEARCH_JAVA_OPTS: -Xms2g -Xmx4g
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    ports:
+      - 5601:5601
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+    networks:
+      - rag
+
+  instruct:
+    build:
+      dockerfile: instruct/Dockerfile
+      context: ./
+    ports:
+      - 8001:8000
+    environment:
+      OPENSEARCH_HOST: opensearch
+    networks:
+      - rag
+    volumes:
+      - $HOME/.cache/huggingface/:/app/.cache/huggingface/:ro
+
+  indexer:
+    build:
+      dockerfile: indexer/Dockerfile
+      context: ./
+    ports:
+      - 8002:8000
+    environment:
+      OPENSEARCH_HOST: opensearch
+    networks:
+      - rag
+    volumes:
+      - $HOME/.cache/huggingface/:/app/.cache/huggingface/:ro

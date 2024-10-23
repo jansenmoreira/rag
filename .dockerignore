@@ -1,0 +1,6 @@
+.venv
+**/__pycache__
+docker-compose.yml
+Makefile
+README.md
+requests.http

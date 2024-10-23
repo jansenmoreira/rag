@@ -1,0 +1,7 @@
+requests
+langchain-text-splitters
+lxml
+fastapi[standard]
+pydantic-settings
+opensearch-dsl
+huggingface_hub[cli]
