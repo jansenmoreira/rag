@@ -81,7 +81,7 @@ Os seguintes parâmetros estão disponíveis:
 | chunk_size    | Controla o tamanho de cada fragmento |
 | chunk_overlap | Controla o tamanho da sobreposição entre cada fragmento |
 
-Caso precise resetar a database. User o endpoint:
+Caso precise resetar a database. Use o endpoint:
 
 ```
 DELETE /index/
